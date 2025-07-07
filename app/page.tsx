@@ -914,7 +914,7 @@ export default function ExcelTodoList() {
               <Files className="w-8 sm:w-10 h-8 sm:h-10 text-yellow-400" />
             </div>
             <p className="text-base sm:text-lg md:text-xl text-white-enhanced px-4 drop-shadow-lg max-w-4xl mx-auto">
-              Tus tareas se guardan automáticamente.
+              Tus actualizaciones se guardan automáticamente.
             </p>
             <div className="flex items-center justify-center gap-2 text-sm">
               <div className="flex items-center gap-2 bg-green-500/30 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-full border border-green-400/40">
@@ -941,7 +941,7 @@ export default function ExcelTodoList() {
                     <Database className="w-6 h-6 text-white" />
                   </div>
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                    Gestión de Archivos
+                    Gestión de Remitos
                   </span>
                 </span>
                 <div className="flex items-center gap-4">
@@ -979,7 +979,7 @@ export default function ExcelTodoList() {
                 <div className="space-y-4">
                   <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="excel-file" className="text-sm font-medium">
-                      Subir nuevo archivo Excel
+                      Subir el archivo Excel a controlar
                     </Label>
                     <Input
                       id="excel-file"
@@ -1093,10 +1093,10 @@ export default function ExcelTodoList() {
                       Progreso General
                     </h3>
                     <p className="text-muted-foreground">
-                      {stats.completado} de {stats.total} tareas completadas
+                      {stats.completado} de {stats.total} articulos recibidos
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Sincronizado con Supabase • Última actualización:{" "}
+                      Sincronizado • Última actualización:{" "}
                       {new Date(currentFile.updated_at).toLocaleString()}
                     </p>
                   </div>
@@ -1151,8 +1151,8 @@ export default function ExcelTodoList() {
                           <SelectItem value="all">Todos los estados</SelectItem>
                           <SelectItem value="pendiente">Pendiente</SelectItem>
                           <SelectItem value="en-proceso">En Proceso</SelectItem>
-                          <SelectItem value="completado">Completado</SelectItem>
-                          <SelectItem value="cancelado">Cancelado</SelectItem>
+                          <SelectItem value="completado">Confirmar</SelectItem>
+                          <SelectItem value="cancelado">No encontrado</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -1189,10 +1189,10 @@ export default function ExcelTodoList() {
                     <FileSpreadsheet className="w-5 h-5 text-white" />
                   </div>
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
-                    Hoja: {sheetName}
+                    Archivo: {sheetName}
                   </span>
                 </CardTitle>
-                <CardDescription>{sheetTodos.length} tareas</CardDescription>
+                <CardDescription>{sheetTodos.length} articulos cargados</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -1243,8 +1243,8 @@ export default function ExcelTodoList() {
                             <SelectContent>
                               <SelectItem value="pendiente">Pendiente</SelectItem>
                               <SelectItem value="en-proceso">En Proceso</SelectItem>
-                              <SelectItem value="completado">Completado</SelectItem>
-                              <SelectItem value="cancelado">Cancelado</SelectItem>
+                              <SelectItem value="completado">Confirmar</SelectItem>
+                              <SelectItem value="cancelado">No encontrado</SelectItem>
                             </SelectContent>
                           </Select>
                           <Button
@@ -1275,7 +1275,7 @@ export default function ExcelTodoList() {
                   No hay archivos guardados
                 </h3>
                 <p className="text-muted-foreground text-center text-sm px-4">
-                  Sube tu primer archivo Excel para comenzar a gestionar tareas con Supabase
+                  Sube tu primer archivo Excel para comenzar a gestionar 
                 </p>
               </CardContent>
             </Card>
