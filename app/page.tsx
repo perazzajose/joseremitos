@@ -1272,7 +1272,7 @@ export default function ExcelTodoList() {
                   <Database className="w-16 h-16 text-white" />
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                  No hay archivos guardados
+                  No hay remitos guardados
                 </h3>
                 <p className="text-muted-foreground text-center text-sm px-4">
                   Sube tu primer archivo Excel para comenzar a gestionar 

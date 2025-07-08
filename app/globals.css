@@ -60,23 +60,21 @@
 
 /* Background Image Configuration */
 .bg-image {
-  background-image: url("/background3.jpg");
+  background-image: url("/background4.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   position: relative;
+  overflow: hidden; /* importante para limitar el blur */
 }
 
 .bg-image::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(1px);
+  inset: 0;
+  background: inherit;
+  filter: blur(8px);
   z-index: 1;
 }
 
@@ -84,7 +82,6 @@
   position: relative;
   z-index: 2;
 }
-
 /* Responsive Background */
 @media (max-width: 768px) {
   .bg-image {
@@ -96,8 +93,8 @@
 /* Enhanced Glassmorphism for better contrast with image */
 .glass-card {
   background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(90px);
+  -webkit-backdrop-filter: blur(80px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
