@@ -104,6 +104,22 @@ const FloatingElements = () => {
     </div>
   )
 }
+function reordenarNombre(nombreOriginal: string): string {
+  const regex = /(\d+)\s+(Q[\w\d]+)/;
+  const match = nombreOriginal.match(regex);
+
+  if (!match) return nombreOriginal;
+
+  const numero = match[1];
+  const codigo = match[2];
+  const indexStart = match.index ?? 0;
+  const indexEnd = indexStart + match[0].length;
+
+  const parteInicial = nombreOriginal.slice(0, indexStart).trim();
+  const parteFinal = nombreOriginal.slice(indexEnd).trim();
+
+  return `${numero} - ${parteInicial} ${codigo}${parteFinal ? ' ' + parteFinal : ''}`;
+}
 
 // Componente de barra de progreso mejorada
 const ProgressBar = ({ percentage }: { percentage: number }) => {
@@ -1106,6 +1122,7 @@ export default function ExcelTodoList() {
           )}
 
           {/* Filters Section */}
+          
           {currentFile && (
             <Card className="glass-card-enhanced border-0 card-hover">
               <CardHeader>
@@ -1179,90 +1196,105 @@ export default function ExcelTodoList() {
               </CardContent>
             </Card>
           )}
+          
+          
+          
+         {/* Todo Lists by Sheet */}
+         
+{Object.entries(groupedTodos).map(([sheetName, sheetTodos]) => (
+ 
 
-          {/* Todo Lists by Sheet */}
-          {Object.entries(groupedTodos).map(([sheetName, sheetTodos]) => (
-            <Card key={sheetName} className="glass-card-enhanced border-0 card-hover">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-lg">
-                  <div className="bg-gradient-to-r from-orange-500 to-red-500 p-2 rounded-lg">
-                    <FileSpreadsheet className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
-                    Archivo: {sheetName}
-                  </span>
-                </CardTitle>
-                <CardDescription>{sheetTodos.length} articulos cargados</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {sheetTodos.map((todo) => (
-                    <div
-                      key={todo.id}
-                      className={`p-4 sm:p-5 rounded-xl border transition-all duration-300 ${statusConfig[todo.status].color} ${statusConfig[todo.status].glowClass}`}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3 mb-3">
-                            <h4
-                              className={`font-semibold text-sm flex-1 ${
-                                todo.status === "completado" ? "line-through opacity-75" : ""
-                              }`}
-                            >
-                              {todo.nombre}
-                            </h4>
-                            {todo.cantidad && (
-                              <Badge variant="outline" className="text-xs w-fit bg-white/50">
-                                {todo.cantidad}
-                              </Badge>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <Badge variant="outline" className="text-xs bg-white/30">
-                              {todo.cellRef}
-                            </Badge>
-                            <Badge variant="outline" className="text-xs bg-white/30">
-                              Fila {todo.row}
-                            </Badge>
-                            <Badge
-                              variant={statusConfig[todo.status].badge as "secondary" | "default" | "destructive"}
-                              className="text-xs bg-white/40"
-                            >
-                              {statusConfig[todo.status].label}
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Select
-                            value={todo.status}
-                            onValueChange={(value: TodoStatus) => handleUpdateTodoStatus(todo.id, value)}
-                          >
-                            <SelectTrigger className="w-full sm:w-32 glass-card border-white/30">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="pendiente">Pendiente</SelectItem>
-                              <SelectItem value="en-proceso">En Proceso</SelectItem>
-                              <SelectItem value="completado">Confirmar</SelectItem>
-                              <SelectItem value="cancelado">No encontrado</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteTodo(todo.id, todo.nombre)}
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50/50 px-2 glass-button"
-                          >
-                            <Trash className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+ 
+ <Card key={sheetName} className="glass-card-enhanced border-0 card-hover">
+  
+    <CardHeader>
+      
+      <CardTitle className="flex items-center gap-3 text-lg">
+        <div className="bg-gradient-to-r from-orange-500 to-red-500 p-2 rounded-lg">
+          <FileSpreadsheet className="w-5 h-5 text-white" />
+        </div>
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
+          Archivo: {sheetName}
+        </span>
+      </CardTitle>
+      
+      <CardDescription>{sheetTodos.length} artículos cargados</CardDescription>
+    </CardHeader>
+    
+    <CardContent>
+      
+      <div className="space-y-4">
+        {sheetTodos.map((todo) => (
+          <div
+            key={todo.id}
+            className={`p-4 sm:p-5 rounded-xl border transition-all duration-300 ${statusConfig[todo.status].color} ${statusConfig[todo.status].glowClass}`}
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3 mb-3">
+                  <h4
+                    className={`font-semibold text-sm flex-1 ${
+                      todo.status === "completado" ? "line-through opacity-75" : ""
+                    }`}
+                  >
+                    {reordenarNombre(todo.nombre)}
+                  </h4>
+                  {todo.cantidad && (
+                    <Badge variant="outline" className="text-xs w-fit bg-white/50">
+                      {todo.cantidad}
+                    </Badge>
+                  )}
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge variant="outline" className="text-xs bg-white/30">
+                    {todo.cellRef}
+                  </Badge>
+                  <Badge variant="outline" className="text-xs bg-white/30">
+                    Fila {todo.row}
+                  </Badge>
+                  <Badge
+                    variant={statusConfig[todo.status].badge as "secondary" | "default" | "destructive"}
+                    className="text-xs bg-white/40"
+                  >
+                    {statusConfig[todo.status].label}
+                  </Badge>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Select
+                  value={todo.status}
+                  onValueChange={(value: TodoStatus) => handleUpdateTodoStatus(todo.id, value)}
+                >
+                  <SelectTrigger className="w-full sm:w-32 glass-card border-white/30">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="pendiente">Pendiente</SelectItem>
+                    <SelectItem value="en-proceso">En Proceso</SelectItem>
+                    <SelectItem value="completado">Confirmar</SelectItem>
+                    <SelectItem value="cancelado">No encontrado</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleDeleteTodo(todo.id, todo.nombre)}
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50/50 px-2 glass-button"
+                >
+                  <Trash className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+    </CardContent>
+    
+  </Card>
+  
+))}
+
 
           {/* Empty State */}
           {excelFiles.length === 0 && !isLoading && (
